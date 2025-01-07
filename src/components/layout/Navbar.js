@@ -15,15 +15,15 @@ const Navbar = () => {
       <div className="container mx-auto px-4">
         <div className="flex justify-between items-center h-16">
           <Link to="/" className="text-xl font-bold text-gray-800">
-            Stock & Order
+            Stok & Sipariş
           </Link>
 
           <div className="flex items-center space-x-4">
             <Link to="/" className="text-gray-600 hover:text-gray-800">
-              Products
+              Ürünler
             </Link>
             <Link to="/orders" className="text-gray-600 hover:text-gray-800">
-              Orders
+              Siparişler
             </Link>
             <Link
               to="/cart"

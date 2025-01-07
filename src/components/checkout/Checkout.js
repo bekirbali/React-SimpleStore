@@ -62,7 +62,7 @@ const Checkout = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Full Name
+                Tam Adınız
               </label>
               <input
                 type="text"
@@ -90,7 +90,7 @@ const Checkout = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Address
+                Adresiniz
               </label>
               <textarea
                 name="address"
@@ -104,7 +104,7 @@ const Checkout = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Phone
+                Telefon Numaranız
               </label>
               <input
                 type="tel"
@@ -120,21 +120,21 @@ const Checkout = () => {
               type="submit"
               className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
-              Place Order
+              Sipariş Ver
             </button>
           </form>
         </div>
 
         <div className="order-1 md:order-2">
           <div className="bg-gray-50 p-6 rounded-lg">
-            <h3 className="text-lg font-medium mb-4">Order Summary</h3>
+            <h3 className="text-lg font-medium mb-4">Sipariş Özeti</h3>
             <div className="space-y-4">
               {cartItems.map((item) => (
                 <div key={item.id} className="flex justify-between">
                   <div>
                     <p className="font-medium">{item.product.name}</p>
                     <p className="text-sm text-gray-500">
-                      Quantity: {item.quantity}
+                      Adet: {item.quantity}
                     </p>
                   </div>
                   <p className="font-medium">
@@ -144,7 +144,7 @@ const Checkout = () => {
               ))}
               <div className="border-t pt-4 mt-4">
                 <div className="flex justify-between font-bold">
-                  <p>Total</p>
+                  <p>Toplam</p>
                   <p>${calculateTotal()}</p>
                 </div>
               </div>

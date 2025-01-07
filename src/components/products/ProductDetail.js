@@ -30,13 +30,13 @@ const ProductDetail = () => {
     return (
       <div className="text-center py-12">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-          Product not found
+          Ürün bulunamadı
         </h2>
         <Link
           to="/"
           className="text-blue-600 hover:text-blue-800 transition-colors"
         >
-          Return to Products
+          Ürünler sayfasına dön
         </Link>
       </div>
     );
@@ -49,7 +49,7 @@ const ProductDetail = () => {
           to="/"
           className="text-blue-600 hover:text-blue-800 transition-colors"
         >
-          ← Back to Products
+          ← Ürünler sayfasına dön
         </Link>
       </div>
 
@@ -71,11 +71,11 @@ const ProductDetail = () => {
             </h2>
             <p className="mt-4 text-gray-600">{product.description}</p>
             <div className="mt-4">
-              <span className="text-gray-600">Unit Type: </span>
+              <span className="text-gray-600">Birim Tipi: </span>
               <span className="font-medium">{product.unit_type}</span>
             </div>
             <div className="mt-4">
-              <span className="text-gray-600">Price: </span>
+              <span className="text-gray-600">Fiyat: </span>
               <span className="text-2xl font-bold text-gray-800">
                 ${product.price.toFixed(2)}
               </span>
@@ -85,7 +85,7 @@ const ProductDetail = () => {
                 htmlFor="quantity"
                 className="block text-sm font-medium text-gray-700"
               >
-                Quantity
+                Adet
               </label>
               <div className="mt-1 flex rounded-md shadow-sm">
                 <input
@@ -104,7 +104,7 @@ const ProductDetail = () => {
               onClick={handleAddToCart}
               className="mt-6 w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
             >
-              Add to Cart
+              Sepete Ekle
             </button>
           </div>
         </div>

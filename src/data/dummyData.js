@@ -8,7 +8,7 @@ export const dummyProducts = [
     id: 1,
     name: "Laptop",
     code: "LPT001",
-    description: "High-performance laptop with latest specifications",
+    description: "Yüksek performanslı laptop",
     price: 999.99,
     unit_type: "piece",
     image: laptopImage,
@@ -17,7 +17,7 @@ export const dummyProducts = [
     id: 2,
     name: "Smartphone",
     code: "SPH001",
-    description: "Latest smartphone with advanced camera features",
+    description: "En son smartphone, gelişmiş fotoğraf özellikleri",
     price: 699.99,
     unit_type: "piece",
     image: phoneImage,
@@ -26,7 +26,7 @@ export const dummyProducts = [
     id: 3,
     name: "Headphones",
     code: "HPH001",
-    description: "Wireless noise-canceling headphones",
+    description: "Kablosuz gürültüyü azaltma kulaklıkları",
     price: 199.99,
     unit_type: "piece",
     image: headphoneImage,
@@ -35,7 +35,7 @@ export const dummyProducts = [
     id: 4,
     name: "Smart Watch",
     code: "SWT001",
-    description: "Fitness tracking smartwatch",
+    description: "Fitness takip eden akıllı saat",
     price: 299.99,
     unit_type: "piece",
     image: watchImage,
@@ -46,7 +46,7 @@ export const dummyOrders = [
   {
     id: 1,
     order_number: "ORD001",
-    status: "delivered",
+    status: "onaylandı",
     total_amount: 1199.98,
     created_at: "2024-01-05T10:30:00Z",
     items: [
@@ -67,7 +67,7 @@ export const dummyOrders = [
   {
     id: 2,
     order_number: "ORD002",
-    status: "processing",
+    status: "teslim edildi",
     total_amount: 699.99,
     created_at: "2024-01-06T15:45:00Z",
     items: [

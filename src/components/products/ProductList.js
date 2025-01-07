@@ -72,7 +72,7 @@ const ProductList = () => {
                 onClick={() => handleAddToCart(product)}
                 className="mt-4 w-full bg-blue-600 text-white py-2 px-4 rounded-lg hover:bg-blue-700 transition-colors"
               >
-                Add to Cart
+                Sepete Ekle
               </button>
             </div>
           </div>

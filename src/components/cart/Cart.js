@@ -40,16 +40,14 @@ const Cart = () => {
     return (
       <div className="text-center py-12">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-          Your cart is empty
+          Sepetiniz boş
         </h2>
-        <p className="text-gray-600 mb-8">
-          Add some products to your cart to get started.
-        </p>
+        <p className="text-gray-600 mb-8">Sepete ürün ekleyerek başlayın.</p>
         <Link
           to="/"
           className="inline-block bg-blue-600 text-white px-6 py-2 rounded-lg hover:bg-blue-700 transition-colors"
         >
-          Browse Products
+          Ürünler sayfasına git
         </Link>
       </div>
     );
@@ -57,7 +55,7 @@ const Cart = () => {
 
   return (
     <div className="space-y-8">
-      <h2 className="text-2xl font-semibold text-gray-800">Shopping Cart</h2>
+      <h2 className="text-2xl font-semibold text-gray-800">Sepetim</h2>
 
       <div className="bg-white rounded-lg shadow">
         <div className="divide-y divide-gray-200">
@@ -80,7 +78,7 @@ const Cart = () => {
                   </h3>
                   <p className="text-sm text-gray-500">{item.product.code}</p>
                   <p className="text-sm text-gray-600 mt-1">
-                    Unit: {item.product.unit_type}
+                    Birim Tipi: {item.product.unit_type}
                   </p>
                 </div>
 
@@ -137,7 +135,7 @@ const Cart = () => {
                       ${(price * item.quantity).toFixed(2)}
                     </div>
                     <div className="text-sm text-gray-500">
-                      ${price.toFixed(2)} each
+                      ${price.toFixed(2)} adet
                     </div>
                   </div>
 
@@ -156,7 +154,7 @@ const Cart = () => {
 
         <div className="p-6 bg-gray-50 rounded-b-lg">
           <div className="flex justify-between items-center">
-            <span className="text-lg font-medium text-gray-800">Total</span>
+            <span className="text-lg font-medium text-gray-800">Toplam</span>
             <span className="text-2xl font-bold text-gray-900">
               ${calculateTotal()}
             </span>
@@ -164,7 +162,7 @@ const Cart = () => {
 
           <div className="mt-6">
             <div className="flex items-center justify-between">
-              <span className="text-lg font-medium text-gray-900">Total</span>
+              <span className="text-lg font-medium text-gray-900">Toplam</span>
               <span className="text-xl font-semibold text-gray-900">
                 ${calculateTotal()}
               </span>
@@ -174,13 +172,13 @@ const Cart = () => {
                 to="/checkout"
                 className="w-full bg-blue-600 text-white py-3 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2 flex items-center justify-center"
               >
-                Proceed to Checkout
+                Sipariş Ver
               </Link>
               <Link
                 to="/"
                 className="w-full bg-gray-200 text-gray-800 py-3 px-4 rounded-md hover:bg-gray-300 focus:outline-none focus:ring-2 focus:ring-gray-500 focus:ring-offset-2 flex items-center justify-center"
               >
-                Continue Shopping
+                Alışverişe devam et
               </Link>
             </div>
           </div>
