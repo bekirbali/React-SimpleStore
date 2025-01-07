@@ -22,15 +22,15 @@ const OrderHistory = () => {
 
   const getStatusIcon = (status) => {
     switch (status) {
-      case "delivered":
+      case "teslim edildi":
         return <CheckCircleIcon className="h-6 w-6 text-green-500" />;
-      case "pending":
+      case "onaylandı":
         return <ClockIcon className="h-6 w-6 text-yellow-500" />;
-      case "processing":
+      case "sırada":
         return <ClockIcon className="h-6 w-6 text-blue-500" />;
-      case "shipped":
+      case "kargoda":
         return <TruckIcon className="h-6 w-6 text-blue-500" />;
-      case "cancelled":
+      case "iptal":
         return <XCircleIcon className="h-6 w-6 text-red-500" />;
       default:
         return null;
@@ -41,18 +41,16 @@ const OrderHistory = () => {
     return (
       <div className="text-center py-12">
         <h2 className="text-2xl font-semibold text-gray-800 mb-4">
-          No orders yet
+          Henüz sipariş yok
         </h2>
-        <p className="text-gray-600">
-          Your order history will appear here once you make your first purchase.
-        </p>
+        <p className="text-gray-600">Sipariş geçmişiniz burada görünecektir.</p>
       </div>
     );
   }
 
   return (
     <div className="space-y-8">
-      <h2 className="text-2xl font-semibold text-gray-800">Order History</h2>
+      <h2 className="text-2xl font-semibold text-gray-800">Sipariş Geçmişi</h2>
 
       <div className="space-y-6">
         {orders.map((order) => (
@@ -63,7 +61,7 @@ const OrderHistory = () => {
             <div className="p-6">
               <div className="flex items-center justify-between mb-4">
                 <div>
-                  <div className="text-sm text-gray-500">Order Number</div>
+                  <div className="text-sm text-gray-500">Sipariş Numarası</div>
                   <div className="text-lg font-medium text-gray-900">
                     {order.order_number}
                   </div>
@@ -94,7 +92,7 @@ const OrderHistory = () => {
                             {item.product.name}
                           </div>
                           <div className="text-sm text-gray-500">
-                            Quantity: {item.quantity}
+                            Adet: {item.quantity}
                           </div>
                         </div>
                       </div>
@@ -114,7 +112,7 @@ const OrderHistory = () => {
                     {formatDate(order.created_at)}
                   </div>
                   <div>
-                    <span className="text-sm text-gray-500">Total: </span>
+                    <span className="text-sm text-gray-500">Toplam: </span>
                     <span className="text-lg font-medium text-gray-900">
                       ${order.total_amount.toFixed(2)}
                     </span>
