@@ -11,7 +11,7 @@ export const dummyProducts = [
     description: "Yüksek performanslı laptop",
     price: 999.99,
     unit_type: "piece",
-    image: laptopImage,
+    image: laptopImage
   },
   {
     id: 2,
@@ -20,7 +20,7 @@ export const dummyProducts = [
     description: "En son smartphone, gelişmiş fotoğraf özellikleri",
     price: 699.99,
     unit_type: "piece",
-    image: phoneImage,
+    image: phoneImage
   },
   {
     id: 3,
@@ -29,7 +29,7 @@ export const dummyProducts = [
     description: "Kablosuz gürültüyü azaltma kulaklıkları",
     price: 199.99,
     unit_type: "piece",
-    image: headphoneImage,
+    image: headphoneImage
   },
   {
     id: 4,
@@ -38,8 +38,8 @@ export const dummyProducts = [
     description: "Fitness takip eden akıllı saat",
     price: 299.99,
     unit_type: "piece",
-    image: watchImage,
-  },
+    image: watchImage
+  }
 ];
 
 export const dummyOrders = [
@@ -54,15 +54,15 @@ export const dummyOrders = [
         id: 1,
         product: dummyProducts[0],
         quantity: 1,
-        price: 999.99,
+        price: 999.99
       },
       {
         id: 2,
         product: dummyProducts[2],
         quantity: 1,
-        price: 199.99,
-      },
-    ],
+        price: 199.99
+      }
+    ]
   },
   {
     id: 2,
@@ -75,16 +75,8 @@ export const dummyOrders = [
         id: 3,
         product: dummyProducts[1],
         quantity: 1,
-        price: 699.99,
-      },
-    ],
-  },
-];
-
-export const initialCartItems = [
-  {
-    id: 1,
-    product: dummyProducts[0],
-    quantity: 1,
-  },
+        price: 699.99
+      }
+    ]
+  }
 ];
