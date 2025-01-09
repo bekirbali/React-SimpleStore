@@ -64,7 +64,7 @@ const Cart = () => {
             return (
               <div
                 key={item.product.id}
-                className="p-6 flex items-center space-x-4"
+                className="p-6 flex flex-col md:flex-row items-center md:space-x-4"
               >
                 <img
                   src={item.product.image}
@@ -77,12 +77,9 @@ const Cart = () => {
                     {item.product.name}
                   </h3>
                   <p className="text-sm text-gray-500">{item.product.code}</p>
-                  <p className="text-sm text-gray-600 mt-1">
-                    Birim Tipi: {item.product.unit_type}
-                  </p>
                 </div>
 
-                <div className="flex items-center space-x-4">
+                <div className="flex flex-col justify-center items-center md:space-x-4">
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() =>
@@ -130,7 +127,7 @@ const Cart = () => {
                     </button>
                   </div>
 
-                  <div className="text-right">
+                  <div className="text-center md:text-right">
                     <div className="text-lg font-semibold text-gray-800">
                       ${(price * item.quantity).toFixed(2)}
                     </div>
