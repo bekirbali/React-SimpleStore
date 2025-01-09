@@ -1,61 +1,189 @@
-import React, { createContext, useContext, useState, useEffect } from "react";
+import React, { createContext, useContext, useEffect, useState } from "react";
+import axios from "axios";
+import { endpoints, getAuthHeaders } from "../api/config.js";
 
 const CartContext = createContext();
 
-const getInitialCartState = () => {
-  const savedCart = localStorage.getItem("cart");
-  return savedCart ? JSON.parse(savedCart) : [];
-};
-
 export const CartProvider = ({ children }) => {
-  const [cartItems, setCartItems] = useState(getInitialCartState);
+  const [cartItems, setCartItems] = useState([]);
+  const [products, setProducts] = useState([]);
+  const [orders, setOrders] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  const fetchProducts = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const { data } = await axios.get(endpoints.products);
+      setProducts(data);
+    } catch (error) {
+      console.error("Error fetching products:", error);
+      setError("Failed to load products. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const fetchCart = async () => {
+    try {
+      const { data } = await axios.get(endpoints.cart, {
+        headers: getAuthHeaders(),
+      });
+      setCartItems(data);
+    } catch (error) {
+      console.error("Error fetching cart:", error);
+      setError("Failed to fetch cart items.");
+    }
+  };
+
+  const addToCart = async (cartItem) => {
+    try {
+      setError(null);
+      const { data } = await axios.post(
+        endpoints.cart,
+        {
+          product_id: cartItem.product.id,
+          quantity: cartItem.quantity || 1,
+        },
+        {
+          headers: getAuthHeaders(),
+        }
+      );
+      await fetchCart(); // Refresh cart after adding item
+    } catch (error) {
+      console.error("Error adding to cart:", error);
+      setError("Failed to add item to cart. Please try again.");
+    }
+  };
+
+  const updateQuantity = async (productId, quantity) => {
+    try {
+      setError(null);
+      await axios.put(
+        `${endpoints.cart}${productId}/`,
+        {
+          product_id: productId,
+          quantity: quantity,
+        },
+        {
+          headers: getAuthHeaders(),
+        }
+      );
+      await fetchCart(); // Refresh cart after updating
+    } catch (error) {
+      console.error("Error updating quantity:", error);
+      setError("Failed to update quantity. Please try again.");
+    }
+  };
+
+  const removeFromCart = async (productId) => {
+    try {
+      setError(null);
+      await axios.delete(`${endpoints.cart}${productId}/`, {
+        headers: getAuthHeaders(),
+      });
+      await fetchCart(); // Refresh cart after removing item
+    } catch (error) {
+      console.error(
+        "Error removing from cart:",
+        error?.response?.data || error.message
+      );
+      setError("Failed to remove item from cart. Please try again.");
+    }
+  };
+
+  const clearCart = async () => {
+    try {
+      setError(null);
+      await axios.delete(`${endpoints.cart}clear/`, {
+        headers: getAuthHeaders(),
+      });
+      await fetchCart();
+      await fetchOrders(); // Refresh orders after clearing cart
+    } catch (error) {
+      console.error("Error clearing cart:", error);
+      setError("Failed to clear cart. Please try again.");
+    }
+  };
+
+  const fetchOrders = async () => {
+    try {
+      setLoading(true);
+      setError(null);
+      const { data } = await axios.get(endpoints.orders, {
+        headers: getAuthHeaders(),
+      });
+      setOrders(data.filter((order) => order.status !== "cart"));
+    } catch (error) {
+      console.error("Error fetching orders:", error);
+      setError("Failed to load orders. Please try again later.");
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const placeOrder = async () => {
+    try {
+      setError(null);
+      await axios.post(
+        endpoints.orders,
+        {},
+        {
+          headers: getAuthHeaders(),
+        }
+      );
+      await fetchCart();
+      await fetchOrders(); // Refresh orders after placing an order
+      return true;
+    } catch (error) {
+      console.error("Error placing order:", error);
+      setError("Failed to place order. Please try again.");
+      return false;
+    }
+  };
+
+  const checkout = async (shippingInfo) => {
+    try {
+      setError(null);
+      const { data } = await axios.post(
+        `${endpoints.orders}checkout/`,
+        shippingInfo,
+        {
+          headers: getAuthHeaders(),
+        }
+      );
+      await fetchCart(); // Refresh cart after checkout
+      return data;
+    } catch (error) {
+      console.error("Error during checkout:", error);
+      setError("Failed to complete checkout. Please try again.");
+      throw error;
+    }
+  };
 
   useEffect(() => {
-    localStorage.setItem("cart", JSON.stringify(cartItems));
-  }, [cartItems]);
-
-  const addToCart = (cartItem) => {
-    setCartItems((prevItems) => {
-      const existingItem = prevItems.find(
-        (item) => item.product.id === cartItem.product.id
-      );
-      if (existingItem) {
-        return prevItems.map((item) =>
-          item.product.id === cartItem.product.id
-            ? { ...item, quantity: item.quantity + (cartItem.quantity || 1) }
-            : item
-        );
-      }
-      return [...prevItems, { ...cartItem, id: prevItems.length + 1 }];
-    });
-  };
-
-  const updateQuantity = (productId, quantity) => {
-    setCartItems((prevItems) =>
-      prevItems.map((item) =>
-        item.product.id === productId ? { ...item, quantity } : item
-      )
-    );
-  };
-
-  const removeFromCart = (productId) => {
-    setCartItems((prevItems) =>
-      prevItems.filter((item) => item.product.id !== productId)
-    );
-  };
-
-  const clearCart = () => {
-    setCartItems([]);
-  };
+    fetchProducts();
+    fetchCart();
+    fetchOrders(); // Add initial orders fetch
+  }, []);
 
   return (
     <CartContext.Provider
       value={{
         cartItems,
+        products,
+        orders,
+        loading,
+        error,
+        fetchProducts,
+        fetchCart,
         addToCart,
         updateQuantity,
         removeFromCart,
-        clearCart
+        clearCart,
+        fetchOrders,
+        checkout,
       }}
     >
       {children}

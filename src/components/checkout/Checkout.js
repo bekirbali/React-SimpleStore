@@ -1,17 +1,18 @@
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { useCart } from "../../context/CartContext";
-import axios from "axios";
-import { API_BASE_URL } from "../../api/config";
 
 const Checkout = () => {
   const navigate = useNavigate();
-  const { cartItems, clearCart } = useCart();
+  const { cartItems, checkout, error } = useCart();
   const [formData, setFormData] = useState({
     full_name: "",
     email: "",
-    address: "",
     phone: "",
+    address: "",
+    city: "",
+    postal_code: "",
+    notes: "",
   });
 
   const handleChange = (e) => {
@@ -24,32 +25,22 @@ const Checkout = () => {
 
   const handleSubmit = async (e) => {
     e.preventDefault();
-
     try {
-      // Create order with items
-      const orderData = {
-        ...formData,
-        items: cartItems.map((item) => ({
-          product: item.product.id,
-          quantity: item.quantity,
-          price: item.product.price,
-        })),
-      };
-
-      await axios.post(`${API_BASE_URL}/orders/`, orderData);
-
-      // Clear cart and redirect to order history
-      clearCart();
-      navigate("/orders");
-    } catch (error) {
-      console.error("Error creating order:", error);
-      alert("Failed to create order. Please try again.");
+      await checkout(formData);
+      navigate("/orders"); // Redirect to order history after successful checkout
+    } catch (err) {
+      // Error is handled by the CartContext
+      console.error("Checkout failed:", err);
     }
   };
 
   const calculateTotal = () => {
     return cartItems
-      .reduce((total, item) => total + item.product.price * item.quantity, 0)
+      .reduce((total, item) => {
+        const price = Number(parseFloat(item.product.price || 0).toFixed(2));
+        const quantity = Number(item.quantity);
+        return total + price * quantity;
+      }, 0)
       .toFixed(2);
   };
 
@@ -62,7 +53,7 @@ const Checkout = () => {
           <form onSubmit={handleSubmit} className="space-y-4">
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Tam Adınız
+                Full Name
               </label>
               <input
                 type="text"
@@ -90,7 +81,21 @@ const Checkout = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Adresiniz
+                Phone
+              </label>
+              <input
+                type="tel"
+                name="phone"
+                value={formData.phone}
+                onChange={handleChange}
+                required
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Address
               </label>
               <textarea
                 name="address"
@@ -104,47 +109,80 @@ const Checkout = () => {
 
             <div>
               <label className="block text-sm font-medium text-gray-700">
-                Telefon Numaranız
+                City
               </label>
               <input
-                type="tel"
-                name="phone"
-                value={formData.phone}
+                type="text"
+                name="city"
+                value={formData.city}
                 onChange={handleChange}
                 required
                 className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
               />
             </div>
 
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Postal Code
+              </label>
+              <input
+                type="text"
+                name="postal_code"
+                value={formData.postal_code}
+                onChange={handleChange}
+                required
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+
+            <div>
+              <label className="block text-sm font-medium text-gray-700">
+                Notes
+              </label>
+              <textarea
+                name="notes"
+                value={formData.notes}
+                onChange={handleChange}
+                rows="3"
+                className="mt-1 block w-full rounded-md border-gray-300 shadow-sm focus:border-blue-500 focus:ring-blue-500"
+              />
+            </div>
+
+            {error && <div className="text-red-600 text-sm mt-2">{error}</div>}
+
             <button
               type="submit"
               className="w-full bg-blue-600 text-white py-2 px-4 rounded-md hover:bg-blue-700 focus:outline-none focus:ring-2 focus:ring-blue-500 focus:ring-offset-2"
             >
-              Sipariş Ver
+              Place Order
             </button>
           </form>
         </div>
 
         <div className="order-1 md:order-2">
           <div className="bg-gray-50 p-6 rounded-lg">
-            <h3 className="text-lg font-medium mb-4">Sipariş Özeti</h3>
+            <h3 className="text-lg font-medium mb-4">Order Summary</h3>
             <div className="space-y-4">
               {cartItems.map((item) => (
-                <div key={item.id} className="flex justify-between">
+                <div key={item.product.id} className="flex justify-between">
                   <div>
                     <p className="font-medium">{item.product.name}</p>
                     <p className="text-sm text-gray-500">
-                      Adet: {item.quantity}
+                      Quantity: {item.quantity}
                     </p>
                   </div>
                   <p className="font-medium">
-                    ${(item.product.price * item.quantity).toFixed(2)}
+                    $
+                    {(
+                      Number(parseFloat(item.product.price || 0).toFixed(2)) *
+                      item.quantity
+                    ).toFixed(2)}
                   </p>
                 </div>
               ))}
               <div className="border-t pt-4 mt-4">
                 <div className="flex justify-between font-bold">
-                  <p>Toplam</p>
+                  <p>Total</p>
                   <p>${calculateTotal()}</p>
                 </div>
               </div>
