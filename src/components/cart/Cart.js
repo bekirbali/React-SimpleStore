@@ -79,7 +79,7 @@ const Cart = () => {
                   <p className="text-sm text-gray-500">{item.product.code}</p>
                 </div>
 
-                <div className="flex flex-col justify-center items-center md:space-x-4">
+                <div className="flex flex-col md:flex-row justify-center items-center md:space-x-4">
                   <div className="flex items-center space-x-2">
                     <button
                       onClick={() =>
@@ -107,7 +107,7 @@ const Cart = () => {
                           parseInt(e.target.value) || 1
                         )
                       }
-                      className="w-16 text-center border rounded-md"
+                      className="w-16 text-center border rounded-md "
                       disabled={updating === item.product.id}
                     />
                     <button

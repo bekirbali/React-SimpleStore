@@ -11,6 +11,49 @@ export const CartProvider = ({ children }) => {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
 
+  const createProduct = async (productData) => {
+    try {
+      setError(null);
+      const formData = new FormData();
+
+      // Format and validate the data before appending to FormData
+      const formattedData = {
+        ...productData,
+        price: parseFloat(productData.price),
+        stock: parseInt(productData.stock),
+      };
+
+      // Append all fields to FormData
+      Object.keys(formattedData).forEach((key) => {
+        // Skip image as it needs special handling
+        if (
+          key !== "image" &&
+          formattedData[key] !== null &&
+          formattedData[key] !== undefined
+        ) {
+          formData.append(key, formattedData[key]);
+        }
+      });
+
+      // Handle image file separately
+      if (productData.image) {
+        formData.append("image", productData.image);
+      }
+
+      await axios.post(endpoints.products, formData, {
+        headers: {
+          ...getAuthHeaders(),
+          "Content-Type": "multipart/form-data",
+        },
+      });
+      await fetchProducts(); // Refresh products list after creating new product
+      return true;
+    } catch (error) {
+      console.error("Error creating product:", error);
+      throw error;
+    }
+  };
+
   const fetchProducts = async () => {
     try {
       setLoading(true);
@@ -184,6 +227,7 @@ export const CartProvider = ({ children }) => {
         clearCart,
         fetchOrders,
         checkout,
+        createProduct,
       }}
     >
       {children}
